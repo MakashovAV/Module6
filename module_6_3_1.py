@@ -5,7 +5,6 @@ class Horse:
     def __init__(self):
         self.x_distance = 0
         self.sound = 'Frrr'
-        # super().__init__() убрана наследуемая инициализация.
 
     def run(self, dx):
         self.x_distance += dx
@@ -21,7 +20,7 @@ class Eagle:
 
 
 class Pegasus(Horse, Eagle):
-    def __init__(self):  # добавлена инициализация родительских классов
+    def __init__(self):
         Horse.__init__(self)
         Eagle.__init__(self)
 
