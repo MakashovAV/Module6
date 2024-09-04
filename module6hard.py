@@ -46,6 +46,8 @@ class Circle(Figure):
 
     def __init__(self, color, *sides):
         super().__init__(color, *sides)
+        if len(sides) != 1:
+            self.set_sides(1)
         self.__radius = sides[0] / (math.pi * 2)  # R = L/2π 0.95493
 
     def get_square(self):
@@ -56,16 +58,21 @@ class Triangle(Figure):
     sides_count = 3
 
     def __init__(self, color, *sides):
-        if self.__is_possible(*sides):
-            super().__init__(color, *sides)
-        else:
-            print('Невозможно построить треугольник из отрезков')
+        super().__init__(color, *sides)
+        if len(sides) != 3:
+            sides = [1]
+            self.set_sides(*sides * 3)
+        if not self.__is_possible(*sides):
+            print(f'Невозможно построить треугольник из отрезков: {self.get_sides()}')
             del self  # почему не удаляет ссылку на обект ???
 
     @staticmethod
-    def __is_possible(a, b, c):  # Проверка на возможность построения треугольника из отрезков "a > b + c"
-        # a, b, c = self.get_sides()
-        return (a < b + c) and (b < a + c) and (c < a + b)
+    def __is_possible(*sides):  # Проверка на возможность построения треугольника из отрезков "a > b + c"
+        if len(sides) == 3:
+            a, b, c = sides
+            return (a < b + c) and (b < a + c) and (c < a + b)
+        else:
+            return False
 
     def get_square(self):
         p = sum(self.get_sides()) / 2  # вычисляем полупериметр
@@ -80,20 +87,44 @@ class Cube(Figure):
 
     def __init__(self, color, *sides):
         super().__init__(color, *sides)
-        self.set_sides(*sides * 12)
+        if len(sides) == 1:
+            self.set_sides(*sides * 12)
+        else:
+            sides = [1]
+            self.set_sides(*sides * 12)
 
     def get_volume(self):
-        return 6 * self.get_sides()[0] ** 2
+        return self.get_sides()[0] ** 3
 
 
 circle1 = Circle((200, 200, 100), 10)  # (Цвет, стороны)
 
-cube1 = Cube((222, 35, 130), 6)
+cube1 = Cube((222, 35, 130), 6, 5)
 
 Triangle2 = Triangle((200, 200, 100), 5, 10, 3)  # невозможный треугольник
-Triangle1 = Triangle((200, 200, 100), 4, 3, 2)
+Triangle1 = Triangle((200, 200, 100), 4, 3, 2, 5)
+print(circle1.get_sides())
 
-print(cube1.get_sides())
-print(cube1.get_volume())
+# print(cube1.get_sides())
+# print(cube1.get_volume())
 
-
+# circle1 = Circle((200, 200, 100), 10) # (Цвет, стороны)
+# cube1 = Cube((222, 35, 130), 6)
+#
+# # Проверка на изменение цветов:
+# circle1.set_color(55, 66, 77) # Изменится
+# print(circle1.get_color())
+# cube1.set_color(300, 70, 15) # Не изменится
+# print(cube1.get_color())
+#
+# # Проверка на изменение сторон:
+# cube1.set_sides(5, 3, 12, 4, 5) # Не изменится
+# print(cube1.get_sides())
+# circle1.set_sides(15) # Изменится
+# print(circle1.get_sides())
+#
+# # Проверка периметра (круга), это и есть длина:
+# print(len(circle1))
+#
+# # Проверка объёма (куба):
+# print(cube1.get_volume())
