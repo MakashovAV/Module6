@@ -74,10 +74,10 @@ class Triangle(Figure):
             return False
 
     def get_square(self):
-        p = sum(self.get_sides()) / 2  # вычисляем полупериметр
+        p = sum(self.get_sides()) / 2
         a, b, c = self.get_sides()
-        s = math.sqrt(p * (p - a) * (p - b) * (p - c))  # вычисляем площадь
-        print("Площадь треугольника:", s)  # выводим результат
+        s = math.sqrt(p * (p - a) * (p - b) * (p - c))
+        print("Площадь треугольника:", s)
         return s
 
 
@@ -118,4 +118,3 @@ print(len(circle1))
 print(cube1.get_volume())
 print(len(cube1))
 
-# На финали причисать вывод и дописать вызов нужных проверок для наглядности, дополнить коментарии.
