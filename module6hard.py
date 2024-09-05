@@ -36,8 +36,11 @@ class Figure:
     def set_sides(self, *new_sides):
         if self.__is_valid_sides(*new_sides):
             self.__sides = [*new_sides]
+            if isinstance(self, Circle):  # Переопределяем новый радиус для новой стороны круга.
+                self.set_radius(new_sides[0] / (math.pi * 2))
         else:
-            print('Количество сторон для данной фигуры не верно')
+            print('Стороны заданы неверно')
+
 
 
 class Circle(Figure):
@@ -48,9 +51,16 @@ class Circle(Figure):
         if len(sides) != 1:
             self.set_sides(1)
         self.__radius = sides[0] / (math.pi * 2)
+        print(self.get_radius())
 
     def get_square(self):
-        return math.pi * self.__radius ** 2
+        return math.pi * (self.__radius ** 2)
+
+    def get_radius(self):
+        return self.__radius
+
+    def set_radius(self, r):
+        self.__radius = r
 
 
 class Triangle(Figure):
@@ -63,7 +73,6 @@ class Triangle(Figure):
             self.set_sides(*sides * 3)
         if not self.__is_possible(*sides):
             print(f'Невозможно построить треугольник из отрезков: {self.get_sides()}')
-            del self  # почему не удаляет ссылку на обект ???
 
     @staticmethod
     def __is_possible(*sides):  # Проверка на возможность построения треугольника из отрезков "a > b + c"
@@ -77,7 +86,6 @@ class Triangle(Figure):
         p = sum(self.get_sides()) / 2
         a, b, c = self.get_sides()
         s = math.sqrt(p * (p - a) * (p - b) * (p - c))
-        print("Площадь треугольника:", s)
         return s
 
 
@@ -96,31 +104,36 @@ class Cube(Figure):
         return self.get_sides()[0] ** 3
 
 
-circle1 = Circle((200, 200, 100), 10) # (Цвет, стороны)
+circle1 = Circle((200, 200, 100), 10)  # (Цвет, стороны)
 cube1 = Cube((222, 35, 130), 6)
-
+triangle_try = Triangle((200, 200, 100), 5, 4, 2)
 
 # Проверка на изменение цветов:
-circle1.set_color(55, 66, 77) # Изменится
+circle1.set_color(55, 66, 77)  # Изменится
 print(circle1.get_color())
-cube1.set_color(300, 70, 15) # Не изменится
+cube1.set_color(300, 70, 15)  # Не изменится
 print(cube1.get_color())
 
 # Проверка на изменение сторон:
-cube1.set_sides(5, 3, 12, 4, 5) # Не изменится
+cube1.set_sides(5, 3, 12, 4, 5)  # Не изменится
 print(cube1.get_sides())
-circle1.set_sides(15) # Изменится
+circle1.set_sides(15)  # Изменится
 print(circle1.get_sides())
 
 # Проверка периметра (круга), это и есть длина:
 print(len(circle1))
 
+# Проверка площади круга
+print(f'Площадь круга = {circle1.get_square()}')
+
 # Проверка объёма (куба):
 print(cube1.get_volume())
 
 # Проверка возможности треугольника
-triangle_try = Triangle((200, 200, 100), 5, 4, 2)
 triangle_false = Triangle((200, 200, 100), 100, 4, 2)
 
+# Проверка площади треугольника
+print(f'Площадь треугольнака = {triangle_try.get_square()}')
 
-
+# Проверка на ввод не валидных сторон
+circle1.set_sides(10.5)
