@@ -15,23 +15,22 @@ class Figure:
         return self.__color
 
     @staticmethod
-    def __is_valid_color(r, g, b):  # Method '__is_valid_color' may be 'static' ???
+    def __is_valid_color(r, g, b):
         return all(0 <= x <= 255 and isinstance(x, int) for x in [r, g, b])
 
     def set_color(self, r, g, b):
         if self.__is_valid_color(r, g, b):
             self.__color = (r, g, b)
         else:
-            print('Нет такого цвета')
+            print(f'Цвет:{r, g, b} вне деапазона 0-255')
 
-    def __is_valid_sides(self, *sides):  # сделать проверку
+    def __is_valid_sides(self, *sides):
         return all(isinstance(x, int) for x in sides) and len(sides) == self.sides_count
 
     def get_sides(self):
         return self.__sides
 
-    def __len__(
-            self):  # Метод __len__ должен возвращать периметр фигуры. Дописать !!!!!!!!!!!!!!!!!!!! для каждой свой ?
+    def __len__(self):
         return sum(self.__sides)
 
     def set_sides(self, *new_sides):
@@ -48,10 +47,10 @@ class Circle(Figure):
         super().__init__(color, *sides)
         if len(sides) != 1:
             self.set_sides(1)
-        self.__radius = sides[0] / (math.pi * 2)  # R = L/2π 0.95493
+        self.__radius = sides[0] / (math.pi * 2)
 
     def get_square(self):
-        return math.pi * self.__radius ** 2  # Через радиус: P = 2πr 2.86479
+        return math.pi * self.__radius ** 2
 
 
 class Triangle(Figure):
@@ -98,33 +97,25 @@ class Cube(Figure):
 
 
 circle1 = Circle((200, 200, 100), 10)  # (Цвет, стороны)
+cube1 = Cube((222, 35, 130), 6)
 
-cube1 = Cube((222, 35, 130), 6, 5)
+# Проверка на изменение цветов:
+circle1.set_color(55, 66, 77)  # Изменится
+print(circle1.get_color())
+cube1.set_color(300, 70, 15)  # Не изменится
+print(cube1.get_color())
 
-Triangle2 = Triangle((200, 200, 100), 5, 10, 3)  # невозможный треугольник
-Triangle1 = Triangle((200, 200, 100), 4, 3, 2, 5)
+# Проверка на изменение сторон:
+cube1.set_sides(5, 3, 12, 4, 5)  # Не изменится
+print(cube1.get_sides())
+circle1.set_sides(15)  # Изменится
 print(circle1.get_sides())
 
-# print(cube1.get_sides())
-# print(cube1.get_volume())
+# Проверка периметра (круга), это и есть длина:
+print(len(circle1))
 
-# circle1 = Circle((200, 200, 100), 10) # (Цвет, стороны)
-# cube1 = Cube((222, 35, 130), 6)
-#
-# # Проверка на изменение цветов:
-# circle1.set_color(55, 66, 77) # Изменится
-# print(circle1.get_color())
-# cube1.set_color(300, 70, 15) # Не изменится
-# print(cube1.get_color())
-#
-# # Проверка на изменение сторон:
-# cube1.set_sides(5, 3, 12, 4, 5) # Не изменится
-# print(cube1.get_sides())
-# circle1.set_sides(15) # Изменится
-# print(circle1.get_sides())
-#
-# # Проверка периметра (круга), это и есть длина:
-# print(len(circle1))
-#
-# # Проверка объёма (куба):
-# print(cube1.get_volume())
+# Проверка объёма (куба):
+print(cube1.get_volume())
+print(len(cube1))
+
+# На финали причисать вывод и дописать вызов нужных проверок для наглядности, дополнить коментарии.
